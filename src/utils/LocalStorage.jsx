@@ -39,7 +39,20 @@ const remove = () => {
   }
 };
 
-export { save, remove, get };
+const deleteTodo = (value) => {
+  try {
+    let data = get();
+    let updatedData = data.todos.filter((todo) => todo.title !== value);
+    window.localStorage.setItem(
+      key,
+      JSON.stringify({ name: data.name, todos: updatedData })
+    );
+  } catch (error) {
+    console.error("Failed to remove Data", error);
+  }
+};
+
+export { save, remove, get, deleteTodo };
 
 //   const [storedValue, setStoredValue] = useState(() => {
 //     try {

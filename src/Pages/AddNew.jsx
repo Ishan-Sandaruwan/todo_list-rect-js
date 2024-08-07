@@ -3,7 +3,7 @@ import { IoClose } from "react-icons/io5";
 import { RiCheckboxBlankFill } from "react-icons/ri";
 import { save } from "../utils/LocalStorage";
 
-export default function AddNew({ show, onClose }) {
+export default function AddNew({ show, onClose, refresh }) {
   const initialValue = {
     title: "",
     description: "",
@@ -30,6 +30,7 @@ export default function AddNew({ show, onClose }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     save(formData);
+    refresh();
     onClose();
   };
 
@@ -37,7 +38,7 @@ export default function AddNew({ show, onClose }) {
     return null;
   }
   return (
-    <div className="fixed inset-0 bg-orange-600 bg-opacity-10 flex justify-center items-center">
+    <div className="fixed inset-0 bg-orange-600 bg-opacity-50 flex justify-center items-center">
       <div className="relative bg-white rounded-xl shadow-lg max-w-xl w-full border-t-2 border-orange-500 ">
         <button
           className="absolute top-4 right-4 text-2xl text-orange-600"
@@ -65,6 +66,7 @@ export default function AddNew({ show, onClose }) {
             placeholder="description"
             value={formData.description}
             onChange={handleChange}
+            required
             className="px-4 py-1 border rounded-lg focus:outline-orange-200 mb-6"
           ></textarea>
           <div className="w-full flex justify-between ">
@@ -74,6 +76,7 @@ export default function AddNew({ show, onClose }) {
               name="date"
               value={formData.date}
               onChange={handleChange}
+              required
               className="p-1 border rounded-lg focus:outline-orange-200 mb-4"
             />
             <label className="font-title">Due Time</label>
@@ -82,6 +85,7 @@ export default function AddNew({ show, onClose }) {
               name="time"
               value={formData.time}
               onChange={handleChange}
+              required
               className="p-1 border rounded-lg focus:outline-orange-200 mb-4"
             />
           </div>
@@ -95,20 +99,11 @@ export default function AddNew({ show, onClose }) {
               <option value={"Red"} className="text-red-500">
                 Red
               </option>
-              <option value={"Orange"} className="text-orange-500">
-                Orange
-              </option>
-              <option value={"Yellow"} className="text-yellow-500">
-                Yellow
-              </option>
               <option value={"Green"} className="text-green-500">
                 Green
               </option>
               <option value={"Blue"} className="text-blue-500">
                 Blue
-              </option>
-              <option value={"purple"} className="text-purple-500">
-                purple
               </option>
             </select>
           </div>

@@ -1,12 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { save, remove, get } from "../utils/LocalStorage";
+import { save, remove, get, deleteTodo } from "../utils/LocalStorage";
 import { useNavigate } from "react-router-dom";
 import AddNew from "./AddNew";
+import { MdDelete } from "react-icons/md";
+import { TiTick } from "react-icons/ti";
+import NewUser from "../components/NewUser";
 
 export default function Home() {
   const [newUser, setNewUser] = useState(true);
-  const [username, setUserName] = useState("");
   const [todos, setTodos] = useState([]);
+  const [userName, setUserName] = useState("");
+
   const navigate = useNavigate();
 
   //   add new task
@@ -18,7 +22,7 @@ export default function Home() {
     setShowModal(false);
   };
 
-  useEffect(() => {
+  const fetchData = () => {
     const data = get();
     if (data.name === "") {
       setNewUser(true);
@@ -27,51 +31,98 @@ export default function Home() {
       setTodos(data.todos);
       setUserName(data.name);
     }
-  });
+  };
+
+  useEffect(() => {
+    fetchData();
+    return () => {
+      setNewUser(true);
+      setUserName("");
+    };
+  }, []);
+
+  const handleRemove = (e) => {
+    e.preventDefault();
+    remove();
+    fetchData();
+    navigate("/");
+  };
+
+  const handleDelete = (todo) => {
+    deleteTodo(todo);
+    console.log("task deleted");
+    fetchData();
+  };
 
   if (newUser) {
-    return (
-      <div className="bg-orange-100 w-full h-screen flex items-center justify-center">
-        <div className="bg-white shadow-xl w-full max-w-xl rounded-xl p-8">
-          <h2 className="font-title text-orange-600 text-xl text-center mb-12">
-            Welocme to Todo List
-          </h2>
-          <label className="font-title mr-4">Enter Your Name</label>
-          <input
-            required
-            type="text"
-            placeholder="username"
-            value={username}
-            onChange={(e) => {
-              setUserName(e.target.value);
-            }}
-            className="px-4 py-1 border-2 rounded-lg focus:outline-orange-300 mb-8"
-          />
-          <button
-            //   onClick={handleSubmit}
-            className="border hover:border-orange-600 border-white rounded-xl hover:text-orange-600 text-white hover:bg-white bg-orange-600 px-6 py-2 font-title duration-300 transition-all w-32 float-right"
-            onClick={(e) => {
-              e.preventDefault();
-              save(username);
-            }}
-          >
-            Save
-          </button>
-        </div>
-      </div>
-    );
+    return <NewUser setAdd={setNewUser} setName={setUserName} />;
   }
 
   return (
-    <div>
-        
-      <button
-        onClick={openModal}
-        className={`bg-blue-500 text-white px-4 py-2 rounded `}
-      >
-        Add Task
-      </button>
-      <AddNew show={showModal} onClose={closeModal} />
+    <div className="bg-orange-100 min-h-screen flex justify-center items-center p-8">
+      <div className="bg-white shadow-xl p-8 rounded-xl w-full max-w-5xl">
+        <div className="font-title">
+          <h3 className="text-3xl mb-2">Hii {userName}</h3>
+          <p>{new Date().toLocaleDateString()} </p>
+        </div>
+        <div className="bg-orange-50 p-8 my-8 rounded-xl shadow-md">
+          {todos.length === 0 ? (
+            <div className="">No tasks yet</div>
+          ) : (
+            <ul>
+              {todos.map((todo, index) => (
+                <li
+                  key={index}
+                  className={`${
+                    todo.color === "Red"
+                      ? "bg-red-300"
+                      : todo.color === "Green"
+                      ? "bg-green-300"
+                      : todo.color === "Blue"
+                      ? "bg-blue-300"
+                      : "bg-orange-300"
+                  } p-4 rounded-md mb-2 shadow-sm relative flex justify-between gap-2 pr-24 cursor-pointer hover:bg-opacity-80 transition-all duration-200`}
+                >
+                  <div className="font-bold">{todo.title}</div>
+                  <div>{todo.description}</div>
+                  <div className="text-sm text-gray-600">
+                    {todo.date} {todo.time}
+                  </div>
+                  <div className="absolute right-3 top-3 text-2xl">
+                    <button
+                      className="mr-6 text-red-700 scale-100 hover:scale-125 transition-all duration-200"
+                      onClick={() => {
+                        handleDelete(todo.title);
+                      }}
+                    >
+                      <MdDelete />
+                    </button>
+                    {/* <button className="mr-6 text-green-700 scale-100 hover:scale-125 transition-all duration-200">
+                      <TiTick />
+                    </button> */}
+                  </div>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+        <div className="float-right text-nowrap">
+          <button
+            onClick={openModal}
+            className="border hover:border-orange-600 border-white rounded-xl hover:text-orange-600 text-white hover:bg-white bg-orange-600 px-6 py-2 font-title duration-300 transition-all w-32 mr-8"
+          >
+            Add Task
+          </button>
+          <button
+            onClick={handleRemove}
+            className="border border-orange-600 hover:border-white rounded-xl text-orange-600 hover:text-white bg-white hover:bg-orange-600 px-6 py-2 mr-6 font-title duration-300 transition-all w-32"
+          >
+            Delete All
+          </button>
+        </div>
+
+        <AddNew show={showModal} onClose={closeModal} refresh={fetchData} />
+      </div>
     </div>
   );
 }
