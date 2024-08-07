@@ -24,7 +24,7 @@ export default function Welcome() {
           >
             Get Start
           </button>
-          <button className="border-2 hover:border-orange-100 border-black rounded-xl hover:text-orange-100 text-black hover:bg-black bg-orange-100 px-6 py-2 font-title duration-300 transition-all">
+          <button onClick={()=>{window.open('https://my-portfolio-git-main-ishan-sandaruwans-projects.vercel.app/','_blank')}} className="border-2 hover:border-orange-100 border-black rounded-xl hover:text-orange-100 text-black hover:bg-black bg-orange-100 px-6 py-2 font-title duration-300 transition-all">
             Contact Me
           </button>
         </div>
