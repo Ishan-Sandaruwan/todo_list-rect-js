@@ -4,7 +4,6 @@ import { RiCheckboxBlankFill } from "react-icons/ri";
 import { save } from "../utils/LocalStorage";
 
 export default function AddNew({ show, onClose }) {
-
   const initialValue = {
     title: "",
     description: "",
@@ -25,15 +24,14 @@ export default function AddNew({ show, onClose }) {
   const handleCansel = (e) => {
     e.preventDefault();
     setFormData(initialValue);
-  }
+    onClose();
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     save(formData);
-
-  }
-
-  console.log(formData);
+    onClose();
+  };
 
   if (!show) {
     return null;
@@ -53,6 +51,7 @@ export default function AddNew({ show, onClose }) {
         <form action="" className="p-6 flex flex-col gap-1 text-slate-600">
           <label className="font-title">Title</label>
           <input
+            required
             type="text"
             placeholder="Title"
             name="title"
@@ -115,10 +114,16 @@ export default function AddNew({ show, onClose }) {
           </div>
 
           <div className="font-title text-center">
-            <button onClick={handleCansel} className="border border-orange-600 hover:border-white rounded-xl text-orange-600 hover:text-white bg-white hover:bg-orange-600 px-6 py-2 mr-6 font-title duration-300 transition-all w-32">
+            <button
+              onClick={handleCansel}
+              className="border border-orange-600 hover:border-white rounded-xl text-orange-600 hover:text-white bg-white hover:bg-orange-600 px-6 py-2 mr-6 font-title duration-300 transition-all w-32"
+            >
               Cansel
             </button>
-            <button onClick={handleSubmit} className="border hover:border-orange-600 border-white rounded-xl hover:text-orange-600 text-white hover:bg-white bg-orange-600 px-6 py-2 font-title duration-300 transition-all w-32">
+            <button
+              onClick={handleSubmit}
+              className="border hover:border-orange-600 border-white rounded-xl hover:text-orange-600 text-white hover:bg-white bg-orange-600 px-6 py-2 font-title duration-300 transition-all w-32"
+            >
               Save
             </button>
           </div>

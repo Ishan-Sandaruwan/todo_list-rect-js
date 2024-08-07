@@ -19,7 +19,13 @@ const get = () => {
 
 const save = (value) => {
   try {
-    window.localStorage.setItem(key, JSON.stringify(value));
+    let data = get();
+    if (typeof value !== "string") {
+      data.todos.push(value);
+    } else {
+      data.name = value;
+    }
+    window.localStorage.setItem(key, JSON.stringify(data));
   } catch (error) {
     console.error("Failed to set localStorage data:", error);
   }
@@ -33,7 +39,7 @@ const remove = () => {
   }
 };
 
-export {save, remove, get};
+export { save, remove, get };
 
 //   const [storedValue, setStoredValue] = useState(() => {
 //     try {
