@@ -1,20 +1,39 @@
 import React, { useState } from "react";
 import { IoClose } from "react-icons/io5";
 import { RiCheckboxBlankFill } from "react-icons/ri";
+import { save } from "../utils/LocalStorage";
 
 export default function AddNew({ show, onClose }) {
-     
-    const [formData,setFormData] = useState({
-        title:"",
-        description:"",
-        date:"",
-        time:"",
-        color:""
-    });
 
-    const handleChange = (e) => {
-        
-    }
+  const initialValue = {
+    title: "",
+    description: "",
+    date: "",
+    time: "",
+    color: "",
+  };
+
+  const [formData, setFormData] = useState(initialValue);
+
+  const handleChange = (e) => {
+    setFormData((prevDate) => ({
+      ...prevDate,
+      [e.target.name]: e.target.value,
+    }));
+  };
+
+  const handleCansel = (e) => {
+    e.preventDefault();
+    setFormData(initialValue);
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    save(formData);
+
+  }
+
+  console.log(formData);
 
   if (!show) {
     return null;
@@ -36,63 +55,70 @@ export default function AddNew({ show, onClose }) {
           <input
             type="text"
             placeholder="Title"
+            name="title"
+            value={formData.title}
+            onChange={handleChange}
             className="px-4 py-1 border rounded-lg focus:outline-orange-200 mb-4"
           />
           <label className="font-title">Description</label>
           <textarea
-            name=""
-            id=""
+            name="description"
+            placeholder="description"
+            value={formData.description}
+            onChange={handleChange}
             className="px-4 py-1 border rounded-lg focus:outline-orange-200 mb-6"
           ></textarea>
           <div className="w-full flex justify-between ">
             <label className="font-title">Due Date</label>
             <input
               type="date"
-              name=""
-              id=""
+              name="date"
+              value={formData.date}
+              onChange={handleChange}
               className="p-1 border rounded-lg focus:outline-orange-200 mb-4"
             />
             <label className="font-title">Due Time</label>
             <input
               type="time"
-              name=""
-              id=""
+              name="time"
+              value={formData.time}
+              onChange={handleChange}
               className="p-1 border rounded-lg focus:outline-orange-200 mb-4"
             />
           </div>
           <div>
             <label className="font-title mr-4">Color</label>
             <select
-              name=""
-              id=""
+              name="color"
               className="py-1 px-2 border rounded-lg focus:outline-orange-200 mb-4"
+              onChange={handleChange}
             >
-              <option value="" className="text-red-500">
+              <option value={"Red"} className="text-red-500">
                 Red
               </option>
-              <option value="" className="text-orange-500">
+              <option value={"Orange"} className="text-orange-500">
                 Orange
               </option>
-              <option value="" className="text-yellow-500">
+              <option value={"Yellow"} className="text-yellow-500">
                 Yellow
               </option>
-              <option value="" className="text-green-500">
+              <option value={"Green"} className="text-green-500">
                 Green
               </option>
-              <option value="" className="text-blue-500">
+              <option value={"Blue"} className="text-blue-500">
                 Blue
               </option>
-              <option value="" className="text-purple-500">
+              <option value={"purple"} className="text-purple-500">
                 purple
               </option>
             </select>
           </div>
 
           <div className="font-title text-center">
-            <button className="border border-orange-600 hover:border-white rounded-xl text-orange-600 hover:text-white bg-white hover:bg-orange-600 px-6 py-2 mr-6 font-title duration-300 transition-all w-32">
+            <button onClick={handleCansel} className="border border-orange-600 hover:border-white rounded-xl text-orange-600 hover:text-white bg-white hover:bg-orange-600 px-6 py-2 mr-6 font-title duration-300 transition-all w-32">
               Cansel
             </button>
-            <button className="border hover:border-orange-600 border-white rounded-xl hover:text-orange-600 text-white hover:bg-white bg-orange-600 px-6 py-2 font-title duration-300 transition-all w-32">
+            <button onClick={handleSubmit} className="border hover:border-orange-600 border-white rounded-xl hover:text-orange-600 text-white hover:bg-white bg-orange-600 px-6 py-2 font-title duration-300 transition-all w-32">
               Save
             </button>
           </div>
