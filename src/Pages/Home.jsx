@@ -75,7 +75,7 @@ export default function Home() {
           <h3 className="text-3xl mb-2">Hii {userName}</h3>
           <p>{new Date().toLocaleDateString()} </p>
         </div>
-        <div className="bg-orange-50 p-8 my-8 rounded-xl shadow-md">
+        <div className="bg-gradient-to-r from-yellow-50 to-red-50 border p-8 my-8 rounded-xl shadow-md">
           <h2 className="font-title mb-6 text-xl">Task To Do</h2>
           {todo.length === 0 ? (
             <div className="">No tasks yet</div>
