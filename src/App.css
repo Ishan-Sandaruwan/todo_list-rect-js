@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Hachi+Maru+Pop&family=Mochiy+Pop+P+One&display=swap');
 
 .bg{
-    background-image: linear-gradient(90deg, rgba(255, 0, 0, 0.3), rgba(255, 251, 0, 0.3)),url('1.jpg');
+    background-image: linear-gradient(90deg, rgba(255, 0, 0, 0.3), rgba(255, 251, 0, 0.3)),url('https://i.pinimg.com/originals/40/f3/62/40f3621a58471126e9cc3ba2ed7b291f.jpg');
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
