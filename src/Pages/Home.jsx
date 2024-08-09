@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { save, remove, get, deleteTodo } from "../utils/LocalStorage";
+import { completeTodo, remove, get, deleteTodo } from "../utils/LocalStorage";
 import { useNavigate } from "react-router-dom";
 import AddNew from "./AddNew";
 import { MdDelete } from "react-icons/md";
@@ -8,7 +8,8 @@ import NewUser from "../components/NewUser";
 
 export default function Home() {
   const [newUser, setNewUser] = useState(true);
-  const [todos, setTodos] = useState([]);
+  const [todo, setTodo] = useState([]);
+  const [completed, setCompleted] = useState([]);
   const [userName, setUserName] = useState("");
 
   const navigate = useNavigate();
@@ -28,7 +29,10 @@ export default function Home() {
       setNewUser(true);
     } else {
       setNewUser(false);
-      setTodos(data.todos);
+      let com = data.todos.filter((to) => to.completed === true);
+      let to = data.todos.filter((to) => to.completed === false);
+      setTodo(to);
+      setCompleted(com);
       setUserName(data.name);
     }
   };
@@ -54,6 +58,12 @@ export default function Home() {
     fetchData();
   };
 
+  const handleCompleted = (todo) => {
+    completeTodo(todo);
+    console.log("task deleted");
+    fetchData();
+  }
+
   if (newUser) {
     return <NewUser setAdd={setNewUser} setName={setUserName} />;
   }
@@ -66,11 +76,52 @@ export default function Home() {
           <p>{new Date().toLocaleDateString()} </p>
         </div>
         <div className="bg-orange-50 p-8 my-8 rounded-xl shadow-md">
-          {todos.length === 0 ? (
+          <h2 className="font-title mb-6 text-xl">Task To Do</h2>
+          {todo.length === 0 ? (
             <div className="">No tasks yet</div>
           ) : (
             <ul>
-              {todos.map((todo, index) => (
+              {todo.map((todo, index) => (
+                <li
+                  key={index}
+                  className={`${
+                    todo.color === "Red"
+                      ? "bg-red-300"
+                      : todo.color === "Green"
+                      ? "bg-green-300"
+                      : todo.color === "Blue"
+                      ? "bg-blue-300"
+                      : "bg-orange-300"
+                  } p-4 rounded-md mb-2 shadow-sm relative flex justify-between gap-2 pr-32 cursor-pointer hover:bg-opacity-80 transition-all duration-200`}
+                >
+                  <div className="font-bold">{todo.title}</div>
+                  <div>{todo.description}</div>
+                  <div className="text-sm text-gray-600">
+                    {todo.date} {todo.time}
+                  </div>
+                  <div className="absolute right-3 top-3 text-2xl">
+                    <button
+                      className="mr-6 text-red-700 scale-100 hover:scale-125 transition-all duration-200"
+                      onClick={() => {
+                        handleDelete(todo.title);
+                      }}
+                    >
+                      <MdDelete />
+                    </button>
+                    <button onClick={()=>{handleCompleted(todo.title)}} className="mr-6 text-green-700 scale-100 hover:scale-125 transition-all duration-200">
+                      <TiTick />
+                    </button>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          )}
+          <h2 className="font-title mt-10 mb-6 text-xl">Completed</h2>
+          {completed.length === 0 ? (
+            <div className="">No tasks yet</div>
+          ) : (
+            <ul>
+              {completed.map((todo, index) => (
                 <li
                   key={index}
                   className={`${
@@ -97,9 +148,6 @@ export default function Home() {
                     >
                       <MdDelete />
                     </button>
-                    {/* <button className="mr-6 text-green-700 scale-100 hover:scale-125 transition-all duration-200">
-                      <TiTick />
-                    </button> */}
                   </div>
                 </li>
               ))}

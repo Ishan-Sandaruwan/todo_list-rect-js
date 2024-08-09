@@ -10,6 +10,7 @@ export default function AddNew({ show, onClose, refresh }) {
     date: "",
     time: "",
     color: "",
+    completed: false,
   };
 
   const [formData, setFormData] = useState(initialValue);
@@ -30,6 +31,7 @@ export default function AddNew({ show, onClose, refresh }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     save(formData);
+    handleCansel(e);
     refresh();
     onClose();
   };

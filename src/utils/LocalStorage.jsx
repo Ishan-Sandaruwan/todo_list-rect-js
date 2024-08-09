@@ -52,7 +52,26 @@ const deleteTodo = (value) => {
   }
 };
 
-export { save, remove, get, deleteTodo };
+const completeTodo = (value) => {
+  try {
+    let data = get();
+    data.todos.forEach(todo => {
+      if(todo.title === value){
+        todo.completed = true;
+      }
+    });
+    window.localStorage.setItem(
+      key,
+      JSON.stringify(data)
+    );
+  } catch (error) {
+    console.error("Failed to remove Data", error);
+  }
+};
+
+
+
+export { save, remove, get, deleteTodo,completeTodo };
 
 //   const [storedValue, setStoredValue] = useState(() => {
 //     try {
