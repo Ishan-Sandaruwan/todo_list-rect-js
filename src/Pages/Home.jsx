@@ -69,7 +69,7 @@ export default function Home() {
   }
 
   return (
-    <div className="bg-orange-100 min-h-screen flex justify-center items-center p-8">
+    <div className="bg min-h-screen flex justify-center items-center p-8">
       <div className="bg-white shadow-xl p-8 rounded-xl w-full max-w-5xl">
         <div className="font-title">
           <h3 className="text-3xl mb-2">Hii {userName}</h3>
