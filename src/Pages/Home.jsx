@@ -118,7 +118,7 @@ export default function Home() {
           )}
           <h2 className="font-title mt-10 mb-6 text-xl">Completed</h2>
           {completed.length === 0 ? (
-            <div className="">No tasks yet</div>
+            <div className="">No Completed tasks yet</div>
           ) : (
             <ul>
               {completed.map((todo, index) => (
