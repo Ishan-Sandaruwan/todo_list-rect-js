@@ -1,16 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { completeTodo, remove, get, deleteTodo } from "../utils/LocalStorage";
 import { useNavigate } from "react-router-dom";
 import AddNew from "./AddNew";
 import { MdDelete } from "react-icons/md";
 import { TiTick } from "react-icons/ti";
 import NewUser from "../components/NewUser";
+import { Store } from "../utils/Reducer";
 
 export default function Home() {
   const [newUser, setNewUser] = useState(true);
   const [todo, setTodo] = useState([]);
   const [completed, setCompleted] = useState([]);
   const [userName, setUserName] = useState("");
+  const { state, dispatch } = useContext(Store);
 
   const navigate = useNavigate();
 
@@ -62,7 +64,7 @@ export default function Home() {
     completeTodo(todo);
     console.log("task deleted");
     fetchData();
-  }
+  };
 
   if (newUser) {
     return <NewUser setAdd={setNewUser} setName={setUserName} />;
@@ -108,7 +110,12 @@ export default function Home() {
                     >
                       <MdDelete />
                     </button>
-                    <button onClick={()=>{handleCompleted(todo.title)}} className="mr-6 text-green-700 scale-100 hover:scale-125 transition-all duration-200">
+                    <button
+                      onClick={() => {
+                        handleCompleted(todo.title);
+                      }}
+                      className="mr-6 text-green-700 scale-100 hover:scale-125 transition-all duration-200"
+                    >
                       <TiTick />
                     </button>
                   </div>
