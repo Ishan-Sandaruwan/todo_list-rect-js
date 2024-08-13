@@ -1,9 +1,13 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { IoClose } from "react-icons/io5";
 import { RiCheckboxBlankFill } from "react-icons/ri";
 import { save } from "../utils/LocalStorage";
+import { Store } from "../utils/Reducer";
 
 export default function AddNew({ show, onClose, refresh }) {
+
+  const { state, dispatch } = useContext(Store);
+
   const initialValue = {
     title: "",
     description: "",
@@ -31,6 +35,8 @@ export default function AddNew({ show, onClose, refresh }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     save(formData);
+    dispatch({ type: 'add_todo',payload: {formData} });
+    console.log(state.todos);
     handleCansel(e);
     refresh();
     onClose();

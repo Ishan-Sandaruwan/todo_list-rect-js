@@ -181,3 +181,4 @@ export default function Home() {
     </div>
   );
 }
+// dispatch({ type: 'increment' })

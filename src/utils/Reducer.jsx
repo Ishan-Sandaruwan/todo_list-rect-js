@@ -39,7 +39,7 @@ const reducer = (state, action) => {
 
 const Store = createContext();
 
-function Reducer() {
+function Reducer({children}) {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   return (
